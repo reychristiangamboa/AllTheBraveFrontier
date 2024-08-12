@@ -4,7 +4,7 @@ namespace AllTheBraveFrontier.Entities
 {
     public abstract class Hero : Character
     {
-        public int MyProperty { get; set; }
+        public string Class { get; set; }
         public int Level { get; set; }
         public int CurrentEvolution { get; set; }
         public Dictionary<int, string> EvolutionLine { get; set; }

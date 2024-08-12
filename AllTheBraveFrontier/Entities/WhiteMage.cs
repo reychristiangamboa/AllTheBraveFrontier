@@ -7,6 +7,7 @@ namespace AllTheBraveFrontier.Entities
 
         public WhiteMage() : base()
         {
+            Class = "White Mage";
             Ability = "Divine Renewal";
             AttackType = "Magical";
             MAG = Utility.RandomRange(2, 8);
