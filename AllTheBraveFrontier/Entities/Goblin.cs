@@ -8,12 +8,13 @@ namespace AllTheBraveFrontier.Entities
         public Goblin() : base()
         {
             Name = "Goblin";
+            Ability = "Goblin Swipes";
             AttackType = "Physical";
             MAG = Utility.RandomRange(8,16);
             RES = Utility.RandomRange(5,20);
             ATK = Utility.RandomRange(2,8);
             CON = Utility.RandomRange(12,20);
-            TotalHP = CON * 500;
+            TotalHP = CON * 500D;
             Gambit.Enqueue(1);
             Gambit.Enqueue(1);
             Gambit.Enqueue(3);
@@ -22,20 +23,13 @@ namespace AllTheBraveFrontier.Entities
             // 1 1 3 2 3
         }
 
-        public void GoblinSwipes(Hero hero)
-        {
-            double damage = (hero.ATK * 25) + (ATK * 25);
-
-            hero.CurrentHP -= damage;
-
-            Console.WriteLine($"{Name} used GOBLIN SWIPES on {hero.Name}.");
-            Console.WriteLine($"{hero.Name}'s HP is now {hero.CurrentHP}/{hero.TotalHP}");
-        }
-
         public override void MainAbility(Character target, List<Character> party)
         {
-            double damageValue = target.ATK * 25 + ATK * 25;
+            // Goblin Swipes – Deal damage to the target equal to the target’s ATK * 25 + this character’s ATK * 25
+            double damageValue = target.ATK * 25D + ATK * 25D;
             target.CurrentHP -= damageValue;
+
+            Console.WriteLine($"{Name} used {Ability} on {target.Name}.");
         }
     }
 }

@@ -7,6 +7,7 @@ namespace AllTheBraveFrontier.Entities
 
         public WhiteMage() : base()
         {
+            Ability = "Divine Renewal";
             AttackType = "Magical";
             MAG = Utility.RandomRange(2, 8);
             RES = Utility.RandomRange(2, 5);
@@ -28,8 +29,11 @@ namespace AllTheBraveFrontier.Entities
                 if(c == this)
                     continue;
 
-                double healValue = MAG + c.MAG * 50;
+                double healValue = MAG + c.MAG * 50D;
                 c.CurrentHP += healValue;
+
+                Console.WriteLine($"{Name} used {Ability}.");
+                Console.WriteLine($"All members healed.");
             }
         }
         

@@ -4,6 +4,7 @@ namespace AllTheBraveFrontier.Entities
     {
 
         public string Name { get; set; } = string.Empty;
+        public string Ability { get; set; } = string.Empty;
         public string AttackType { get; set; } = string.Empty;
         public double MAG { get; set; }
         public double RES { get; set; }
