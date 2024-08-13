@@ -1,3 +1,4 @@
+using AllTheBraveFrontier.Entities;
 using RandomNameGeneratorLibrary;
 
 namespace AllTheBraveFrontier.Utilities
@@ -14,6 +15,45 @@ namespace AllTheBraveFrontier.Utilities
         {
             PersonNameGenerator generator = new PersonNameGenerator();
             return generator.GenerateRandomFirstName();
+        }
+
+        public static Hero? FindHero(string name, List<Hero> heroes)
+        {
+            foreach (Hero hero in heroes)
+            {
+                if (hero.Name.ToLower().Equals(name))
+                {
+                    return hero;
+                }
+            }
+            return null;
+        }
+
+        public static bool IsHeroExists(string name, List<Hero> heroes)
+        {
+            foreach (Hero hero in heroes)
+            {
+                if (hero.Name.ToLower().Equals(name))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static void DisplayHeroes(List<Hero> heroes)
+        {
+            foreach (Hero c in heroes)
+            {
+                Console.WriteLine($"{c.Name}\n{c.Class}\t{c.EvolutionLine[c.CurrentEvolution]}");
+                Console.WriteLine($"MAG\t{c.MAG}\tRES\t{c.RES}");
+                Console.WriteLine($"ATK\t{c.ATK}\tCON\t{c.CON}\n");
+            }
+        }
+
+        public static bool ValidInput(string input)
+        {
+            return !string.IsNullOrEmpty(input) || !string.IsNullOrWhiteSpace(input);
         }
     }
 }
