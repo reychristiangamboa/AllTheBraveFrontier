@@ -15,6 +15,7 @@ namespace AllTheBraveFrontier.Entities
             ATK = Utility.RandomRange(0, 2);
             CON = Utility.RandomRange(3, 5);
             TotalHP = CON * 250D;
+            CurrentHP = TotalHP;
             EvolutionLine = new Dictionary<int, string>() {
                 { 1, "Acolyte" },
                 { 2, "Cleric" },
@@ -22,7 +23,7 @@ namespace AllTheBraveFrontier.Entities
             };
         }
 
-        public override void MainAbility(Character target, List<Character> party)
+        public override void MainAbility(Character? target, List<Hero>? party)
         {
             // Divine Renewal - Heals all allies to this characters's MAG + the ally's MAG * 50
             foreach(Character c in party)
@@ -34,7 +35,7 @@ namespace AllTheBraveFrontier.Entities
                 c.CurrentHP += healValue;
 
                 Console.WriteLine($"{Name} used {Ability}.");
-                Console.WriteLine($"All members healed.");
+                Console.WriteLine($"All party members healed.");
             }
         }
         

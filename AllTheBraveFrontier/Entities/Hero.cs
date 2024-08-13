@@ -8,6 +8,7 @@ namespace AllTheBraveFrontier.Entities
         public int Level { get; set; }
         public int CurrentEvolution { get; set; }
         public Dictionary<int, string> EvolutionLine { get; set; }
+        public byte BattleAction { get; set; }
 
         public Hero() : base()
         {
@@ -15,6 +16,7 @@ namespace AllTheBraveFrontier.Entities
             Level = 1;
             CurrentEvolution = 1;
             EvolutionLine = [];
+            BattleAction = 0;
         }
         
     }

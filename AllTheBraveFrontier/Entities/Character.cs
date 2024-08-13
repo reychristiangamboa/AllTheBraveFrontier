@@ -29,12 +29,9 @@ namespace AllTheBraveFrontier.Entities
             }
 
             target.CurrentHP -= damage;
-
-            Console.WriteLine($"{Name} used BASIC ATTACK on {target.Name}.");
-            Console.WriteLine($"{target.Name}'s HP is now {CurrentHP}/{TotalHP}.");
         }
 
-        public abstract void MainAbility(Character target, List<Character> party);
+        public abstract void MainAbility(Character? target, List<Hero>? party);
 
         public bool IsDead() 
         {

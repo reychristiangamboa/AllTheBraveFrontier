@@ -15,6 +15,7 @@ namespace AllTheBraveFrontier.Entities
             ATK = Utility.RandomRange(7, 11);
             CON = Utility.RandomRange(1, 4);
             TotalHP = CON * 250D;
+            CurrentHP = TotalHP;
             EvolutionLine = new Dictionary<int, string>() {
                 { 1, "Sewer Rat" },
                 { 2, "Cutpurse" },
@@ -22,7 +23,7 @@ namespace AllTheBraveFrontier.Entities
             };
         }
 
-        public override void MainAbility(Character target, List<Character> party)
+        public override void MainAbility(Character? target, List<Hero>? party)
         {
             // Blood-soaked Blades – attacks a target enemy and deals damage equal to this character’s ATK * 100, 
             // and deals damage to itself equal to 25% of the damage dealt.

@@ -4,32 +4,32 @@ namespace AllTheBraveFrontier.Entities
 {
     public class Game
     {
-        public Player player { get; set; }
+        public Player Player { get; set; }
         public List<Hero> InitialHeroes { get; set; }
+        public Battle Battle { get; set; }
+        public Goblin Goblin { get; set; }
 
         public Game()
         {
-            player = new Player();
+            Player = new Player();
             InitialHeroes = new List<Hero>();
         }
 
         public void InitializeGame()
         {
-            Console.WriteLine("Welcome to All the Brave Frontier!");
+            Console.WriteLine("\t\t\tWelcome to All the Brave Frontier!");
 
             do
             {
                 Console.Write("Please enter your name, player:");
-                player.Name = Console.ReadLine();
+                Player.Name = Console.ReadLine();
 
-                if (string.IsNullOrEmpty(player.Name))
-                {
+                if (string.IsNullOrEmpty(Player.Name))
                     Console.WriteLine("Please provide a name. Try again.");
-                }
 
-            } while (string.IsNullOrWhiteSpace(player.Name));
+            } while (!Utility.ValidInput(Player.Name));
 
-            Console.WriteLine($"\nWelcome, {player.Name}!\n");
+            Console.WriteLine($"\nWelcome, {Player.Name}!\n");
 
             ChooseInitialHeroes();
         }
@@ -43,13 +43,13 @@ namespace AllTheBraveFrontier.Entities
             {
                 if (satisfiedInput.ToLower().Equals("n"))
                 {
-                    player.Party.Clear();
+                    Player.Party.Clear();
                     InitialHeroes.Clear();
                     Console.Clear();
                 }
 
                 InitialHeroes = GenerateHeroes();
-                Console.WriteLine($"\nGreetings, {player.Name}! Your intial heroes are being generated...\n");
+                Console.WriteLine($"\nGreetings, {Player.Name}! Your intial heroes are being generated...\n");
 
                 Utility.DisplayHeroes(InitialHeroes);
 
@@ -62,36 +62,30 @@ namespace AllTheBraveFrontier.Entities
 
                     #region hero choice validations
                     if (!Utility.ValidInput(heroChoice))
-                    {
                         Console.WriteLine("Please input a name. Try again.\n");
-                    }
-                    else if (Utility.IsHeroExists(heroChoice, player.Party)) // hero already exists in party
-                    {
+                    else if (Utility.IsHeroExists(heroChoice, Player.Party))
                         Console.WriteLine("Hero already exists in your party. Try again.\n");
-                    }
-                    else if (!Utility.IsHeroExists(heroChoice, InitialHeroes)) // hero not in the initial list
-                    {
+                    else if (!Utility.IsHeroExists(heroChoice, InitialHeroes))
                         Console.WriteLine("Hero doesn't exist from the list. Try again.\n");
-                    }
                     else
                     {
                         Hero? hero = Utility.FindHero(heroChoice, InitialHeroes);
-                        player.Party.Add(hero);
+                        Player.Party.Add(hero);
                         Console.WriteLine($"{hero.Name}\t{hero.Class} ADDED!\n");
                     }
                     #endregion
 
-                } while (!Utility.ValidInput(heroChoice) || (Utility.IsHeroExists(heroChoice, player.Party) && player.Party.Count < 5)
+                } while (!Utility.ValidInput(heroChoice) || (Utility.IsHeroExists(heroChoice, Player.Party) && Player.Party.Count < 5)
                             || !Utility.IsHeroExists(heroChoice, InitialHeroes));
 
                 Console.WriteLine("\nHere are the heroes that have made the cut:\n");
 
-                Utility.DisplayHeroes(player.Party);
+                Utility.DisplayHeroes(Player.Party);
 
                 do
                 {
                     Console.Write("Satisfied with your party? [Y/N]");
-                    satisfiedInput = Console.ReadLine().ToLower();
+                    satisfiedInput = Console.ReadLine()?.Trim().ToLower();
 
                     if (!Utility.ValidInput(satisfiedInput) || (!satisfiedInput.Equals("y") && !satisfiedInput.Equals("n")))
                         Console.WriteLine("Please input [Y] or [N]. Try again.");
@@ -99,6 +93,56 @@ namespace AllTheBraveFrontier.Entities
                 } while (!Utility.ValidInput(satisfiedInput) || (!satisfiedInput.Equals("y") && !satisfiedInput.Equals("n")));
 
             } while (satisfiedInput.Equals("n"));
+
+            InitialHeroes.Clear();
+            DisplayMainMenuScreen();
+        }
+
+        private void DisplayMainMenuScreen()
+        {
+            string playerChoice = string.Empty;
+
+            Console.WriteLine("\n***** ALL THE BRAVE FRONTIER *****");
+            Console.WriteLine("[S]TART GAME");
+            Console.WriteLine("S[E]TTINGS");
+            Console.WriteLine("[R]ESTART");
+            Console.WriteLine("[Q]UIT");
+
+            playerChoice = Console.ReadLine()?.Trim().ToLower();
+
+            switch (playerChoice)
+            {
+                case "s":
+                    DisplayChooseEnemyScreen();
+                    break;
+                case "q":
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+
+        private void DisplayChooseEnemyScreen()
+        {
+            string playerChoice = string.Empty;
+
+            Console.WriteLine("\n***** CHOOSE ENEMY *****");
+            Console.WriteLine("[G]OBLIN");
+            Console.WriteLine("[B]ACK");
+
+            playerChoice = Console.ReadLine()?.Trim().ToLower();
+
+            switch (playerChoice)
+            {
+                case "g":
+                    Goblin = new Goblin();
+                    Battle = new Battle(this, Player, Goblin);
+                    Battle.DefeatedGoblin();
+                    break;
+                case "b":
+                    DisplayMainMenuScreen();
+                    break;
+            }
+
         }
 
         private List<Hero> GenerateHeroes()
@@ -107,9 +151,7 @@ namespace AllTheBraveFrontier.Entities
             List<Hero> heroes = new List<Hero>();
 
             for (int i = 0; i < 25; i++)
-            {
                 heroes.Add(GenerateHero());
-            }
 
             return heroes;
         }
