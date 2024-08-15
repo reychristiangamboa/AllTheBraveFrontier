@@ -10,11 +10,11 @@ namespace AllTheBraveFrontier.Entities
             Class = "Rogue";
             Ability = "Blood-soaked Blades";
             AttackType = "Physical";
-            MAG = Utility.RandomRange(1, 4);
-            RES = Utility.RandomRange(1, 8);
-            ATK = Utility.RandomRange(7, 11);
-            CON = Utility.RandomRange(1, 4);
-            TotalHP = CON * 250D;
+            MAG = Utility.RandomRange(1, 5);
+            RES = Utility.RandomRange(1, 9);
+            ATK = Utility.RandomRange(7, 12);
+            CON = Utility.RandomRange(1, 5);
+            TotalHP = CON * 25D;
             CurrentHP = TotalHP;
             EvolutionLine = new Dictionary<int, string>() {
                 { 1, "Sewer Rat" },
@@ -23,13 +23,56 @@ namespace AllTheBraveFrontier.Entities
             };
         }
 
-        public override void MainAbility(Character? target, List<Hero>? party)
+        public override Hero Clone()
+        {
+            return new Rogue 
+            {
+                Name = Name,
+                Class = Class,
+                Level = Level,
+                Ability = Ability,
+                AttackType = AttackType,
+                MAG = MAG,
+                RES = RES,
+                ATK = ATK,
+                CON = CON,
+                TotalHP = TotalHP,
+                CurrentHP = CurrentHP,
+                CurrentEvolution = CurrentEvolution,
+                EvolutionLine = EvolutionLine,
+            };
+        }
+
+        public override void MainAbility(params object[] targets)
         {
             // Blood-soaked Blades – attacks a target enemy and deals damage equal to this character’s ATK * 100, 
             // and deals damage to itself equal to 25% of the damage dealt.
-            double damageValue = ATK * 100;
-            target.CurrentHP -= damageValue;
-            CurrentHP -= damageValue * 0.25;
+
+            foreach (var t in targets)
+            {
+                if (t is Enemy e)
+                {
+                    double damageValue = ATK * 100D;
+
+                    Console.WriteLine($"\n{Name} used {Ability} on {e.Name}.");
+                    
+                    // Enemy's HP
+                    Console.Write($"{e.Name}'s HP: {e.CurrentHP}/{e.TotalHP} -> ");
+                    if ((e.CurrentHP - damageValue) < 0)
+                        e.CurrentHP = 0;
+                    else
+                        e.CurrentHP -= damageValue;
+                    Console.Write($"{e.CurrentHP}/{e.TotalHP}.\n");
+                    
+                    // Rogue's HP
+                    Console.Write($"{Name}'s HP: {CurrentHP}/{TotalHP} -> ");
+                    if ((CurrentHP - damageValue * 0.25D) < 0)
+                        CurrentHP = 0;
+                    else
+                        CurrentHP -= damageValue * 0.25D;
+                    Console.Write($"{CurrentHP}/{TotalHP}.\n");
+                }
+            }
         }
         
     }

@@ -44,27 +44,7 @@ namespace AllTheBraveFrontier.Utilities
         public static void DisplayHeroes(List<Hero> heroes)
         {
             foreach (Hero c in heroes)
-            {
-                Console.WriteLine($"{c.Name}");
-                Console.WriteLine($"{c.Class} - {c.EvolutionLine[c.CurrentEvolution]}");
-                Console.WriteLine($"MAG\t{c.MAG}\tRES\t{c.RES}");
-                Console.WriteLine($"ATK\t{c.ATK}\tCON\t{c.CON}\n");
-            }
-        }
-
-        public static void DisplayHeroesHP(List<Hero> heroes)
-        {
-            if (heroes != null)
-            {
-                foreach (Hero c in heroes)
-                {
-                    Console.WriteLine($"{c.Name}\tHP {c.CurrentHP}/{c.TotalHP}");
-                    Console.WriteLine($"{c.Class} - {c.EvolutionLine[c.CurrentEvolution]}");
-                    Console.WriteLine($"MAG\t{c.MAG}\tRES\t{c.RES}");
-                    Console.WriteLine($"ATK\t{c.ATK}\tCON\t{c.CON}\n");
-                }
-
-            }
+                Console.WriteLine(c.ShowDetails());
         }
 
         public static bool ValidInput(string input)

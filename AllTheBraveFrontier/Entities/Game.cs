@@ -8,11 +8,15 @@ namespace AllTheBraveFrontier.Entities
         public List<Hero> InitialHeroes { get; set; }
         public Battle Battle { get; set; }
         public Goblin Goblin { get; set; }
+        public bool DefeatedGoblin { get; set; }
+        public bool DefeatedLizardman { get; set; }
 
         public Game()
         {
             Player = new Player();
             InitialHeroes = new List<Hero>();
+            DefeatedGoblin = false;
+            DefeatedLizardman = false;
         }
 
         public void InitializeGame()
@@ -45,7 +49,6 @@ namespace AllTheBraveFrontier.Entities
                 {
                     Player.Party.Clear();
                     InitialHeroes.Clear();
-                    Console.Clear();
                 }
 
                 InitialHeroes = GenerateHeroes();
@@ -58,7 +61,7 @@ namespace AllTheBraveFrontier.Entities
                 do
                 {
                     Console.Write("Hero name: ");
-                    heroChoice = Console.ReadLine().ToLower();
+                    heroChoice = Console.ReadLine().Trim().ToLower();
 
                     #region hero choice validations
                     if (!Utility.ValidInput(heroChoice))
@@ -98,7 +101,7 @@ namespace AllTheBraveFrontier.Entities
             DisplayMainMenuScreen();
         }
 
-        private void DisplayMainMenuScreen()
+        public void DisplayMainMenuScreen()
         {
             string playerChoice = string.Empty;
 
@@ -136,7 +139,7 @@ namespace AllTheBraveFrontier.Entities
                 case "g":
                     Goblin = new Goblin();
                     Battle = new Battle(this, Player, Goblin);
-                    Battle.DefeatedGoblin();
+                    Battle.CommenceBattle();
                     break;
                 case "b":
                     DisplayMainMenuScreen();
