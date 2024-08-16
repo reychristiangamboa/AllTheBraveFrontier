@@ -27,7 +27,7 @@ namespace AllTheBraveFrontier.Entities
             DeadHeroes = new List<Hero>();
         }
 
-        public void CommenceBattle()
+        public bool CommenceBattle()
         {
             do
             {
@@ -48,12 +48,18 @@ namespace AllTheBraveFrontier.Entities
             {
                 Console.WriteLine($"\nWELL DONE! {Enemy.Name} has been defeated!\n");
                 SetEnemyDefeated();
+                Console.ReadLine();
+                Game.DisplayMainMenuScreen();
+                return true;
             }
             else
+            {
                 Console.WriteLine($"\nOH NO! You lost to {Enemy.Name}. Come up with a better strategy next time!\n");
+                Console.ReadLine();
+                Game.DisplayMainMenuScreen();
+                return false;
+            }
 
-            Console.ReadLine();
-            Game.DisplayMainMenuScreen();
         }
 
         private void ProcessPlayerTurn()
@@ -248,6 +254,12 @@ namespace AllTheBraveFrontier.Entities
                 case Goblin:
                     Game.DefeatedGoblin = true;
                     break;
+                case Lizardman:
+                    Game.DefeatedLM = true;
+                    break;
+                case SkeletalDragon:
+                    Game.DefeatedSD = true;
+                    break;
                 default:
                     break;
             }
@@ -256,7 +268,7 @@ namespace AllTheBraveFrontier.Entities
         private List<Hero> CloneHeroes(List<Hero> heroes)
         {
             List<Hero> clones = new List<Hero>();
-            foreach(Hero h in heroes)
+            foreach (Hero h in heroes)
                 clones.Add(h.Clone());
 
             return clones;

@@ -22,7 +22,7 @@ namespace AllTheBraveFrontier.Entities
         {
             Console.WriteLine($"\n{Name} used BASIC ATTACK on {target.Name}.");
 
-            double damageValue = 0;
+            double damageValue = 0D;
 
             if (AttackType.Equals("Physical"))
                 damageValue += ATK * 50D;
@@ -30,8 +30,8 @@ namespace AllTheBraveFrontier.Entities
                 damageValue += MAG * 25D;
 
             Console.Write($"{target.Name}'s HP: {target.CurrentHP}/{target.TotalHP} -> ");
-            if ((target.CurrentHP - damageValue) < 0)
-                target.CurrentHP = 0;
+            if ((target.CurrentHP - damageValue) < 0D)
+                target.CurrentHP = 0D;
             else
                 target.CurrentHP -= damageValue;
             Console.Write($"{target.CurrentHP}/{target.TotalHP}.\n");

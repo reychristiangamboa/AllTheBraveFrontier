@@ -14,7 +14,7 @@ namespace AllTheBraveFrontier.Entities
             RES = Utility.RandomRange(1, 9);
             ATK = Utility.RandomRange(7, 12);
             CON = Utility.RandomRange(1, 5);
-            TotalHP = CON * 25D;
+            TotalHP = CON * 250D;
             CurrentHP = TotalHP;
             EvolutionLine = new Dictionary<int, string>() {
                 { 1, "Sewer Rat" },
@@ -52,22 +52,22 @@ namespace AllTheBraveFrontier.Entities
             {
                 if (t is Enemy e)
                 {
-                    double damageValue = ATK * 100D;
-
                     Console.WriteLine($"\n{Name} used {Ability} on {e.Name}.");
+                    
+                    double damageValue = ATK * 100D;
                     
                     // Enemy's HP
                     Console.Write($"{e.Name}'s HP: {e.CurrentHP}/{e.TotalHP} -> ");
-                    if ((e.CurrentHP - damageValue) < 0)
-                        e.CurrentHP = 0;
+                    if ((e.CurrentHP - damageValue) < 0D)
+                        e.CurrentHP = 0D;
                     else
                         e.CurrentHP -= damageValue;
                     Console.Write($"{e.CurrentHP}/{e.TotalHP}.\n");
                     
                     // Rogue's HP
                     Console.Write($"{Name}'s HP: {CurrentHP}/{TotalHP} -> ");
-                    if ((CurrentHP - damageValue * 0.25D) < 0)
-                        CurrentHP = 0;
+                    if ((CurrentHP - damageValue * 0.25D) < 0D)
+                        CurrentHP = 0D;
                     else
                         CurrentHP -= damageValue * 0.25D;
                     Console.Write($"{CurrentHP}/{TotalHP}.\n");
