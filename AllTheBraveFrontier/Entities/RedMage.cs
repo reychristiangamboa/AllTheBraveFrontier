@@ -60,7 +60,7 @@ namespace AllTheBraveFrontier.Entities
                     c.ATK = Math.Min(100D, c.ATK + ATK * 0.10D);
                     c.CON = Math.Min(100D, c.CON + CON * 0.10D);
 
-                    Console.WriteLine($"{c.ShowDetails()}\n");
+                    Console.WriteLine($"{c.ShowDetails()}");
                 }
             }
 

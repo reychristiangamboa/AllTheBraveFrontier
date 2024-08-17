@@ -7,8 +7,10 @@ namespace AllTheBraveFrontier.Entities
         public Player Player { get; set; }
         public List<Hero> InitialHeroes { get; set; }
         public Battle Battle { get; set; }
-        public Goblin Goblin { get; set; }
-        public Lizardman Lizardman { get; set; }
+        public Goblin GoblinProp { get; set; }
+        public Lizardman LizardmanProp { get; set; }
+        public SkeletalDragon SkeletalDragonProp { get; set; }
+        public Dragonsire DragonsireProp { get; set; }
         public bool DefeatedGoblin { get; set; }
         public bool DefeatedLM { get; set; }
         public bool DefeatedSD { get; set; }
@@ -178,7 +180,6 @@ namespace AllTheBraveFrontier.Entities
             do
             {
                 List<Hero> rosterFusionCandidates = Player.HeroRoster.Where(rosterHero => Player.Party.Any(partyHero => rosterHero.GetType() == partyHero.GetType())).ToList();
-                List<Hero> partyFusionCandidates = Player.Party.Where(partyHero => Player.HeroRoster.Any(rosterHero => partyHero.GetType() == rosterHero.GetType())).ToList();
 
                 Console.WriteLine($"ROSTER ({Player.HeroRoster.Count}):");
                 Utility.DisplayHeroes(Player.HeroRoster);
@@ -225,6 +226,9 @@ namespace AllTheBraveFrontier.Entities
 
                             Console.WriteLine("You have chosen:");
                             Console.WriteLine(rosterHero.ShowDetails());
+
+
+                            List<Hero> partyFusionCandidates = Player.Party.Where(partyHero => partyHero.GetType() == rosterHero.GetType()).ToList();
 
                             Console.WriteLine("\nHERO PARTY:");
                             for (int i = 0; i < partyFusionCandidates.Count; i++)
@@ -301,8 +305,17 @@ namespace AllTheBraveFrontier.Entities
                         Console.WriteLine($"ATK\t{hero.ATK}\tCON\t{hero.CON}");
                     }
 
-                    Console.WriteLine("Choose hero from the party:");
-                    partyHeroIndexStr = Console.ReadLine();
+                    do
+                    {
+                        Console.WriteLine("Choose hero from the party:");
+                        partyHeroIndexStr = Console.ReadLine();
+                        if (!Utility.ValidInput(partyHeroIndexStr)
+                                || !int.TryParse(partyHeroIndexStr, out partyHeroIndex)
+                                || int.Parse(partyHeroIndexStr) <= 0 && int.Parse(partyHeroIndexStr) >= Player.Party.Count)
+                            Console.WriteLine("Invalid input. Try again.");
+                    } while (!Utility.ValidInput(partyHeroIndexStr)
+                                || !int.TryParse(partyHeroIndexStr, out partyHeroIndex)
+                                || int.Parse(partyHeroIndexStr) <= 0 && int.Parse(partyHeroIndexStr) >= Player.Party.Count);
 
                     if (Utility.ValidInput(partyHeroIndexStr)
                         && int.TryParse(partyHeroIndexStr, out partyHeroIndex)
@@ -322,8 +335,17 @@ namespace AllTheBraveFrontier.Entities
                             Console.WriteLine($"ATK\t{hero.ATK}\tCON\t{hero.CON}");
                         }
 
-                        Console.WriteLine("Choose hero from the roster:");
-                        rosterHeroIndexStr = Console.ReadLine();
+                        do
+                        {
+                            Console.WriteLine("Choose hero from the roster:");
+                            rosterHeroIndexStr = Console.ReadLine();
+                            if (!Utility.ValidInput(rosterHeroIndexStr)
+                                    || !int.TryParse(rosterHeroIndexStr, out rosterHeroIndex)
+                                    || int.Parse(rosterHeroIndexStr) <= 0 && int.Parse(rosterHeroIndexStr) >= Player.Party.Count)
+                                Console.WriteLine("Invalid input. Try again.");
+                        } while (!Utility.ValidInput(rosterHeroIndexStr)
+                                || !int.TryParse(rosterHeroIndexStr, out partyHeroIndex)
+                                || int.Parse(rosterHeroIndexStr) <= 0 && int.Parse(rosterHeroIndexStr) >= Player.Party.Count);
 
                         if (Utility.ValidInput(rosterHeroIndexStr)
                         && int.TryParse(rosterHeroIndexStr, out rosterHeroIndex)
@@ -365,16 +387,32 @@ namespace AllTheBraveFrontier.Entities
             switch (PlayerInput)
             {
                 case "g":
-                    Goblin = new Goblin();
-                    Battle = new Battle(this, Player, Goblin);
+                    GoblinProp = new Goblin();
+                    Battle = new Battle(this, Player, GoblinProp);
                     win = Battle.CommenceBattle();
-                    RewardHeroes(win);
+                    RewardHeroes(win, GoblinProp);
+                    DisplayMainMenuScreen();
                     break;
                 case "l":
-                    Lizardman = new Lizardman();
-                    Battle = new Battle(this, Player, Lizardman);
+                    LizardmanProp = new Lizardman();
+                    Battle = new Battle(this, Player, LizardmanProp);
                     win = Battle.CommenceBattle();
-                    RewardHeroes(win);
+                    RewardHeroes(win, LizardmanProp);
+                    DisplayMainMenuScreen();
+                    break;
+                case "s":
+                    SkeletalDragonProp = new SkeletalDragon();
+                    Battle = new Battle(this, Player, SkeletalDragonProp);
+                    win = Battle.CommenceBattle();
+                    RewardHeroes(win, SkeletalDragonProp);
+                    DisplayMainMenuScreen();
+                    break;
+                case "d":
+                    DragonsireProp = new Dragonsire();
+                    Battle = new Battle(this, Player, DragonsireProp);
+                    win = Battle.CommenceBattle();
+                    RewardHeroes(win, DragonsireProp);
+                    DisplayMainMenuScreen();
                     break;
                 case "b":
                     DisplayMainMenuScreen();
@@ -383,22 +421,38 @@ namespace AllTheBraveFrontier.Entities
 
         }
 
-        private void RewardHeroes(bool win)
+        private void RewardHeroes(bool win, Enemy e)
         {
             List<Hero> newHeroes = new List<Hero>();
             int numHeroes = 0;
 
             if (win)
-                numHeroes = 5;
+            {
+                switch (e)
+                {
+                    case Goblin:
+                        numHeroes = 3;
+                        break;
+                    case Lizardman:
+                        numHeroes = 6;
+                        break;
+                    case SkeletalDragon:
+                        numHeroes = 9;
+                        break;
+                    case Dragonsire:
+                        numHeroes = 12;
+                        break;
+                }
+            }
             else
-                numHeroes = 2;
+                numHeroes = 1;
 
 
             for (int i = 0; i < numHeroes; i++)
             {
                 Hero h = GenerateHero();
                 newHeroes.Add(h);
-                Player.HeroRoster.Add(GenerateHero());
+                Player.HeroRoster.Add(h);
             }
 
             Console.WriteLine("\nMeet your new heroes:\n");

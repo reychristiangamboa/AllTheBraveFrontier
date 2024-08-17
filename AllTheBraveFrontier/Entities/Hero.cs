@@ -33,7 +33,7 @@ namespace AllTheBraveFrontier.Entities
             {
                 Console.WriteLine($"\n{fusee.ShowDetails()}");
                 Console.WriteLine("has been merged to");
-                Console.WriteLine($"\nShowDetails()");
+                Console.WriteLine($"\n{ShowDetails()}");
 
                 FuseAttributes(fusee);
 

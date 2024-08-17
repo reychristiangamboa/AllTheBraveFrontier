@@ -49,14 +49,14 @@ namespace AllTheBraveFrontier.Entities
                 Console.WriteLine($"\nWELL DONE! {Enemy.Name} has been defeated!\n");
                 SetEnemyDefeated();
                 Console.ReadLine();
-                Game.DisplayMainMenuScreen();
+                
                 return true;
             }
             else
             {
                 Console.WriteLine($"\nOH NO! You lost to {Enemy.Name}. Come up with a better strategy next time!\n");
                 Console.ReadLine();
-                Game.DisplayMainMenuScreen();
+
                 return false;
             }
 
@@ -77,6 +77,15 @@ namespace AllTheBraveFrontier.Entities
                     {
                         case WhiteMage:
                             currentHero.MainAbility(BattleParty.ToArray());
+                            break;
+                        case BlackMage:
+                            currentHero.MainAbility(Enemy);
+                            break;
+                        case RedMage:
+                            currentHero.MainAbility(BattleParty.ToArray());
+                            break;
+                        case Constable:
+                            currentHero.MainAbility(Enemy);
                             break;
                         case Rogue:
                             currentHero.MainAbility(Enemy);
@@ -102,6 +111,8 @@ namespace AllTheBraveFrontier.Entities
                 else
                     DamageQueue.Enqueue(currentHero);
                 #endregion
+
+                Console.ReadLine();
 
             } while (HeroStack.Count != 0);
             Console.ReadLine();
@@ -134,6 +145,9 @@ namespace AllTheBraveFrontier.Entities
                     DeadHeroes.Add(currentHero);
                 }
                 #endregion
+
+                Console.ReadLine();
+
             } while (DamageQueue.Count != 0);
 
             Enemy.ResetGambit();
